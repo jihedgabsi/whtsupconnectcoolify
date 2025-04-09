@@ -1,14 +1,19 @@
 const qrcode = require('qrcode');
 const { Client, LocalAuth } = require('whatsapp-web.js');
+const playwright = require('playwright'); // Playwright au lieu de Puppeteer
 
 let whatsappScanQR = null;
 let isWhatsAppConnected = false;
 let isClientInitialized = false;
 
-// Initialisation du client sans Puppeteer
 const client = new Client({
     authStrategy: new LocalAuth(),
-    puppeteer: false // Désactive complètement Puppeteer
+    puppeteer: {
+        browser: async () => await playwright.chromium.launch({
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
+        })
+    }
 });
 
 client.on('qr', async (qr) => {
@@ -28,6 +33,7 @@ client.on('disconnected', (reason) => {
     whatsappScanQR = null;
 });
 
+// Démarrer WhatsApp Web
 exports.startWhatsApp = async (req, res) => {
     if (isWhatsAppConnected) {
         return res.json({ success: true, message: "✅ WhatsApp est déjà connecté." });
@@ -47,6 +53,7 @@ exports.startWhatsApp = async (req, res) => {
     }
 };
 
+// Obtenir le QR Code
 exports.getQRCode = (req, res) => {
     if (!whatsappScanQR) {
         return res.status(500).json({ error: "QR Code non disponible. Démarrez WhatsApp avec POST /whatsapp/start" });
@@ -54,6 +61,7 @@ exports.getQRCode = (req, res) => {
     res.json({ qrCode: whatsappScanQR });
 };
 
+// Envoyer un message
 exports.sendMessage = async (req, res) => {
     const { phone, message } = req.body;
 
@@ -74,10 +82,12 @@ exports.sendMessage = async (req, res) => {
     }
 };
 
+// Vérifier le statut
 exports.getStatus = (req, res) => {
     res.json({ isConnected: isWhatsAppConnected });
 };
 
+// Déconnexion de WhatsApp
 exports.logoutWhatsApp = async (req, res) => {
     if (!isWhatsAppConnected) {
         return res.json({ success: false, message: "WhatsApp n'est pas connecté." });
