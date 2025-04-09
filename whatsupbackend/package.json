@@ -17,13 +17,11 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.12.1",
     "net": "^1.0.2",
+    "playwright": "^1.51.1",
+    "playwright-extra": "^4.3.6",
+    "playwright-extra-plugin-stealth": "^0.0.1",
     "qrcode": "^1.5.4",
-    "whatsapp-web.js": "^1.26.0",
-
-
-    
-    
-
+    "whatsapp-web.js": "^1.26.0"
   },
   "description": ""
 }
