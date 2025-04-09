@@ -22,7 +22,7 @@ const Whatsup = () => {
 
   const checkStatus = async () => {
     try {
-      const response = await axios.get(process.env.REACT_APP_BASE_URL + "/api//whatsapp/status");
+      const response = await axios.get(process.env.REACT_APP_BASE_URL + "/api/whatsapp/status");
       setIsConnected(response.data.isConnected);
     } catch (error) {
       console.error("Erreur lors de la vérification du statut", error);
@@ -33,7 +33,7 @@ const Whatsup = () => {
     if (isConnected) return; // Stoppe la mise à jour si déjà connecté
 
     try {
-      const response = await axios.get(process.env.REACT_APP_BASE_URL + "/api//whatsapp/qrcode");
+      const response = await axios.get(process.env.REACT_APP_BASE_URL + "/api/whatsapp/qrcode");
       setQrCode(response.data.qrCode);
     } catch (error) {
       console.error("Erreur lors de la récupération du QR Code", error);
@@ -42,7 +42,7 @@ const Whatsup = () => {
 
   const startWhatsApp = async () => {
     try {
-      const response = await axios.post(process.env.REACT_APP_BASE_URL + "/api//whatsapp/start");
+      const response = await axios.post(process.env.REACT_APP_BASE_URL + "/api/whatsapp/start");
       alert(response.data.message);
       window.location.reload();
     } catch (error) {
@@ -52,7 +52,7 @@ const Whatsup = () => {
 
   const disconnectWhatsApp = async () => {
     try {
-      const response = await axios.post(process.env.REACT_APP_BASE_URL + "/api//whatsapp/logout");
+      const response = await axios.post(process.env.REACT_APP_BASE_URL + "/api/whatsapp/logout");
       alert(response.data.message);
       window.location.reload();
     } catch (error) {
