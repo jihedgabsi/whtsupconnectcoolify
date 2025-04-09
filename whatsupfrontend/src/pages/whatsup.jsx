@@ -22,7 +22,7 @@ const Whatsup = () => {
 
   const checkStatus = async () => {
     try {
-      const response = await axios.get("http://z04owo4gwkwwk0ookkcg4ko0.82.112.242.233.sslip.io/api/whatsapp/status");
+      const response = await axios.get("http://z04owo4gwkwwk0ookkcg4ko0.82.112.242.233.sslip.io/api/whatsup/qrcode");
       setIsConnected(response.data.isConnected);
     } catch (error) {
       console.error("Erreur lors de la vérification du statut", error);
@@ -33,7 +33,7 @@ const Whatsup = () => {
     if (isConnected) return; // Stoppe la mise à jour si déjà connecté
 
     try {
-      const response = await axios.get("http://z04owo4gwkwwk0ookkcg4ko0.82.112.242.233.sslip.io/api/whatsapp/qrcode");
+      const response = await axios.get("http://z04owo4gwkwwk0ookkcg4ko0.82.112.242.233.sslip.io/api/whatsup/qrcode");
       setQrCode(response.data.qrCode);
     } catch (error) {
       console.error("Erreur lors de la récupération du QR Code", error);
@@ -42,7 +42,7 @@ const Whatsup = () => {
 
   const startWhatsApp = async () => {
     try {
-      const response = await axios.post("http://z04owo4gwkwwk0ookkcg4ko0.82.112.242.233.sslip.io/api/whatsapp/start");
+      const response = await axios.post("http://z04owo4gwkwwk0ookkcg4ko0.82.112.242.233.sslip.io/api/whatsup/start");
       alert(response.data.message);
       window.location.reload();
     } catch (error) {
@@ -52,7 +52,7 @@ const Whatsup = () => {
 
   const disconnectWhatsApp = async () => {
     try {
-      const response = await axios.post("http://z04owo4gwkwwk0ookkcg4ko0.82.112.242.233.sslip.io/api/whatsapp/logout");
+      const response = await axios.post("http://z04owo4gwkwwk0ookkcg4ko0.82.112.242.233.sslip.io/api/whatsup/logout");
       alert(response.data.message);
       window.location.reload();
     } catch (error) {
@@ -66,7 +66,7 @@ const Whatsup = () => {
       return;
     }
     try {
-      const response = await axios.post("http://z04owo4gwkwwk0ookkcg4ko0.82.112.242.233.sslip.io/api/whatsapp/send", { phone, message });
+      const response = await axios.post("http://z04owo4gwkwwk0ookkcg4ko0.82.112.242.233.sslip.io/api/whatsup/send", { phone, message });
       alert(response.data.message);
       window.location.reload();
     } catch (error) {
