@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 
-const Whatsup = () => {
+const whatsup = () => {
   const [qrCode, setQrCode] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [phone, setPhone] = useState("");
@@ -193,4 +193,4 @@ const Whatsup = () => {
   );
 }
 
-export default Whatsup;
+export default whatsup;
