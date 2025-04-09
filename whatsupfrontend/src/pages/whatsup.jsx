@@ -22,7 +22,7 @@ const Whatsup = () => {
 
   const checkStatus = async () => {
     try {
-      const response = await axios.get("http://z04owo4gwkwwk0ookkcg4ko0.82.112.242.233.sslip.io/api/whatsup/qrcode");
+      const response = await axios.get("http://z04owo4gwkwwk0ookkcg4ko0.82.112.242.233.sslip.io/api/whatsup/status");
       setIsConnected(response.data.isConnected);
     } catch (error) {
       console.error("Erreur lors de la vérification du statut", error);
