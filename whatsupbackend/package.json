@@ -19,9 +19,7 @@
     "net": "^1.0.2",
     "qrcode": "^1.5.4",
     "whatsapp-web.js": "^1.26.0",
-    "puppeteer": "^24.9.2",
-    "puppeteer-extra": "^3.4.1",
-    "puppeteer-extra-plugin-stealth": "^2.13.0"
+
 
     
     
