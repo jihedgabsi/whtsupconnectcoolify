@@ -1,21 +1,23 @@
 const qrcode = require('qrcode');
 const { Client, LocalAuth } = require('whatsapp-web.js');
-const playwright = require('playwright'); // Playwright au lieu de Puppeteer
+const puppeteer = require('puppeteer-extra');
+const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+
+// Active le mode furtif pour éviter les blocages
+puppeteer.use(StealthPlugin());
 
 let whatsappScanQR = null;
 let isWhatsAppConnected = false;
 let isClientInitialized = false;
 
+
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
-        browser: async () => await playwright.chromium.launch({
-            headless: true,
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
-        })
+        headless: true, // Exécuter sans interface graphique
+        args: ['--no-sandbox', '--disable-setuid-sandbox'], // Éviter les erreurs liées aux permissions
     }
 });
-
 client.on('qr', async (qr) => {
     console.log('QR Code reçu:', qr);
     whatsappScanQR = await qrcode.toDataURL(qr);
@@ -32,6 +34,7 @@ client.on('disconnected', (reason) => {
     isClientInitialized = false;
     whatsappScanQR = null;
 });
+
 
 // Démarrer WhatsApp Web
 exports.startWhatsApp = async (req, res) => {
@@ -52,6 +55,7 @@ exports.startWhatsApp = async (req, res) => {
         res.status(500).json({ error: "❌ Échec de l'initialisation de WhatsApp." });
     }
 };
+
 
 // Obtenir le QR Code
 exports.getQRCode = (req, res) => {
