@@ -10,24 +10,14 @@ let whatsappScanQR = null;
 let isWhatsAppConnected = false;
 let isClientInitialized = false;
 
+
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
-        headless: true,
-        executablePath: '/usr/bin/chromium-browser', // Chemin vers Chromium sur Ubuntu
-        args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-            '--disable-accelerated-2d-canvas',
-            '--no-first-run',
-            '--no-zygote',
-            '--disable-gpu'
-        ],
-        timeout: 120000 // Augmenter le timeout à 2 minutes
+        headless: true, // Exécuter sans interface graphique
+        args: ['--no-sandbox', '--disable-setuid-sandbox'], // Éviter les erreurs liées aux permissions
     }
 });
-
 client.on('qr', async (qr) => {
     console.log('QR Code reçu:', qr);
     whatsappScanQR = await qrcode.toDataURL(qr);
@@ -45,14 +35,17 @@ client.on('disconnected', (reason) => {
     whatsappScanQR = null;
 });
 
+
 // Démarrer WhatsApp Web
 exports.startWhatsApp = async (req, res) => {
     if (isWhatsAppConnected) {
         return res.json({ success: true, message: "✅ WhatsApp est déjà connecté." });
     }
+
     if (isClientInitialized) {
         return res.json({ success: true, message: "🕒 WhatsApp est en cours de connexion..." });
     }
+
     try {
         client.initialize();
         isClientInitialized = true;
@@ -62,6 +55,7 @@ exports.startWhatsApp = async (req, res) => {
         res.status(500).json({ error: "❌ Échec de l'initialisation de WhatsApp." });
     }
 };
+
 
 // Obtenir le QR Code
 exports.getQRCode = (req, res) => {
@@ -74,12 +68,15 @@ exports.getQRCode = (req, res) => {
 // Envoyer un message
 exports.sendMessage = async (req, res) => {
     const { phone, message } = req.body;
+
     if (!phone || !message) {
         return res.status(400).json({ error: "Numéro de téléphone et message requis." });
     }
+
     if (!isWhatsAppConnected) {
         return res.status(403).json({ error: "WhatsApp n'est pas connecté. Veuillez scanner le QR Code." });
     }
+
     try {
         await client.sendMessage(`${phone}@c.us`, message);
         res.json({ success: true, message: `Message envoyé à ${phone}` });
@@ -99,6 +96,7 @@ exports.logoutWhatsApp = async (req, res) => {
     if (!isWhatsAppConnected) {
         return res.json({ success: false, message: "WhatsApp n'est pas connecté." });
     }
+
     try {
         await client.logout();
         isWhatsAppConnected = false;
