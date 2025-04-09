@@ -7,7 +7,7 @@ const App = () => {
         <AuthProvider>
             <Router>
                 <Routes>
-                    <Route path="/whatsup" element={<Whatsup />} />
+                    <Route path="/whatsup" element={<whatsup />} />
                 </Routes>
             </Router>
         </AuthProvider>
